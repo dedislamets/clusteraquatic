@@ -21,6 +21,14 @@
     <link href="public/template/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
     <link href="public/template/build/css/custom.css" rel="stylesheet">
     <link href="public/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    <style type="text/css">
+      .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+          width: 100%;
+      }
+      ul.bar_tabs>li {
+            width: 30%;
+      }
+    </style>
   </head>
 
   <body class="nav-md">
@@ -107,61 +115,87 @@
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-4 col-sm-4 col-xs-12">
-                <select id="selectpicker" multiple data-actions-box="true"></select>
-              </div>
-              <div class="col-md-4 col-sm-4 col-xs-12">
-                <select id="selectmonth" multiple data-actions-box="true">
-                  <option value="jan" selected>Januari</option>
-                  <option value="feb" selected>Februari</option>
-                  <option value="mar" selected>Maret</option>
-                  <option value="apr" selected>April</option>
-                  <option value="mei" selected>Mei</option>
-                  <option value="juni" selected>Juni</option>
-                  <option value="jul" selected>Juli</option>
-                  <option value="agust" selected>Agustus</option>
-                  <option value="sep" selected>September</option>
-                  <option value="okt" selected>Oktober</option>
-                  <option value="nov" selected>November</option>
-                  <option value="des" selected>Desember</option>
-                </select>
-              </div>
-              <div class="col-md-4 col-sm-4 col-xs-12">
-                <select id="selectstatus" multiple data-actions-box="true">
-                  <option value="sudah" selected>Sudah Bayar</option>
-                  <option value="belum" selected>Belum Bayar</option>
-                </select>
-              </div>
-              <div class="col-md-4 col-sm-4 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>By Status</h2>
-                    <div class="clearfix"></div>
+              <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
+                <li class="nav-item active">
+                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Iuran Warga</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">PPL</a>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade active in" id="home" role="tabpanel" aria-labelledby="home-tab">
+                  <div class="col-md-12" style="margin-bottom: 10px;padding-bottom: 10px;border-bottom: 2px solid #E6E9ED;">
+                    <div class="col-md-1"><h3 style="margin-bottom: 0">Filter</h2></div>
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+                      <select id="selectpicker" style="width: 100%" multiple data-actions-box="true"></select>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+                      <select id="selectmonth" style="width: 100%" multiple data-actions-box="true">
+                        <option value="jan" selected>Januari</option>
+                        <option value="feb" selected>Februari</option>
+                        <option value="mar" selected>Maret</option>
+                        <option value="apr" selected>April</option>
+                        <option value="mei" selected>Mei</option>
+                        <option value="juni" selected>Juni</option>
+                        <option value="jul" selected>Juli</option>
+                        <option value="agust" selected>Agustus</option>
+                        <option value="sep" selected>September</option>
+                        <option value="okt" selected>Oktober</option>
+                        <option value="nov" selected>November</option>
+                        <option value="des" selected>Desember</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+                      <select id="selectstatus" style="width: 100%" multiple data-actions-box="true">
+                        <option value="sudah" selected>Sudah Bayar</option>
+                        <option value="belum" selected>Belum Bayar</option>
+                      </select>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <button type="button" id="btn-refresh" class="btn btn-block btn-success">Refresh</button>
+                    </div>
                   </div>
-                  <div class="x_content">
-                    <div id="iuranChart" style="height:350px;"></div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2>By Status</h2>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="x_content">
+                        <div id="iuranChart" style="height:350px;"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Iuran Warga</h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <div id="tableIuran"></div>
-                  </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2>Iuran Warga</h2>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="x_content">
+                        <div id="tableIuran"></div>
+                      </div>
+                    </div>
+                  </div> 
                 </div>
-              </div>
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Report PPL</h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <div id="tableReport"></div>
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2>Report PPL</h2>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="x_content">
+                        <div id="tableReport"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -111,7 +111,15 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Upload</h2>
+                    <h2 style="display: block;width: 100%;">
+                      <div style="float: left;padding-top: 7px">Upload</div>
+                      <div class="col-md-3 col-sm-3 col-xs-12">
+                        <select id="selectstatus" class="form-control" style="width: 100%">
+                          <option value="iuran" selected>Iuran Warga</option>
+                          <option value="ppl">PPL</option>
+                        </select>
+                      </div>
+                    </h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">

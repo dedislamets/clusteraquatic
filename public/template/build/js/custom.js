@@ -5212,7 +5212,7 @@ if (typeof NProgress != 'undefined') {
 		}  
 	   
 	function dataIuran(){
-		setInterval(function(){
+		//setInterval(function(){
 			var selectpicker = $('#selectpicker').selectpicker().val();	
 			var selectmonth = $('#selectmonth').selectpicker().val();
 			var selectstatus = $('#selectstatus').selectpicker().val();
@@ -5265,11 +5265,11 @@ if (typeof NProgress != 'undefined') {
 					init_DataTables();
 		        }
 		    });
-		}, 5000);
+		//}, 5000);
 	}
 
 	function chartIuran(){
-		setInterval(function(){
+		//setInterval(function(){
 			var selectpicker = $('#selectpicker').selectpicker().val();	
 			var selectmonth = $('#selectmonth').selectpicker().val();
 			var selectstatus = $('#selectstatus').selectpicker().val();
@@ -5311,7 +5311,7 @@ if (typeof NProgress != 'undefined') {
 					});
 				}
 		    });
-		}, 5000);
+		//}, 5000);
 	}
 
 	function dataRT()
@@ -5330,6 +5330,7 @@ if (typeof NProgress != 'undefined') {
 	        		rtData += '<option value="'+idRT[i]+'" selected>'+valueRT[i]+'</option>';
 				}
 	        	$('#selectpicker').html(rtData);
+	        	$('#selectpicker').selectpicker();
 	        }
 	    });
 	}
@@ -5368,7 +5369,9 @@ if (typeof NProgress != 'undefined') {
 	}
 
 	$(document).ready(function() {
-				
+		$('#selectmonth').selectpicker();
+		$('#selectstatus').selectpicker();
+		dataRT();	
 		init_sparklines();
 		init_flot_chart();
 		init_sidebar();
@@ -5403,12 +5406,20 @@ if (typeof NProgress != 'undefined') {
 		init_CustomNotification();
 		init_autosize();
 		init_autocomplete();
-		dataIuran();
-		dataRT();
-		chartIuran();
+		
+		
 		dataReport();
+		setTimeout(function(){ 
+			chartIuran();dataIuran(); 
+		}, 3000);
 		// var dashboard_task_handle;
 		// dashboard_task_handle = setInterval(function(){chartIuran()}, 5000);
 	});	
 	
+	$(document).ready(function() {
+
+	    $('#btn-refresh').on('click', function() {
+	    	chartIuran();
+	    });
+	});
 
