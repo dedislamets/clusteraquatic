@@ -5246,6 +5246,7 @@ if (typeof NProgress != 'undefined') {
 						iuranTable += '<tbody>';
 								$.each( tbody, function( keys_tbody, vals_tbody ) {
 									iuranTable += '<tr>';
+									
 										$.each( thead_data, function( keys_thead, vals_thead ) {
 											if (vals_tbody[vals_thead] == '0,00' || vals_tbody[vals_thead] == undefined) {
 												if (vals_tbody[vals_thead] == undefined) {
@@ -5420,6 +5421,7 @@ if (typeof NProgress != 'undefined') {
 
 	    $('#btn-refresh').on('click', function() {
 	    	chartIuran();
+	    	dataIuran(); 
 	    });
 	});
 

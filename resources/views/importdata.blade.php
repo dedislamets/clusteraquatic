@@ -50,7 +50,7 @@
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <li><a href="{{ url('/') }}"><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="{{ url('/') }}"><i class="fa fa-home"></i> Home </a>
                   </li>
                   <li><a><i class="fa fa-table"></i> Excel <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -113,17 +113,24 @@
                   <div class="x_title">
                     <h2 style="display: block;width: 100%;">
                       <div style="float: left;padding-top: 7px">Upload</div>
-                      <div class="col-md-3 col-sm-3 col-xs-12">
-                        <select id="selectstatus" class="form-control" style="width: 100%">
-                          <option value="iuran" selected>Iuran Warga</option>
-                          <option value="ppl">PPL</option>
-                        </select>
-                      </div>
+                      
                     </h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form action="{{ url('api/import') }}" method="POST" class="dropzone"></form>
+                    <!-- <div class="dropzone" id="drop1">
+                        <div class="dz-message">
+                            <h3> Click or Drop Excel Here</h3>
+                        </div>
+                    </div> -->
+                    <form action="{{ url('api/import') }}" method="POST" class="dropzone">
+                      <div class="col-md-3 col-sm-3 col-xs-12">
+                        <select id="jenis" name="jenis" class="form-control" style="width: 100%">
+                          <option value="iuran">Iuran Warga</option>
+                          <option value="ppl">PPL</option>
+                        </select>
+                      </div>
+                    </form>
                     <br />
                     <br />
                     <br />
@@ -192,6 +199,28 @@
     $("#datetimepicker7").on("dp.change", function(e) {
         $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
     });
+
+    // Dropzone.autoDiscover = false;
+    // var excel_upload= new Dropzone("#drop1",{
+    //     url: "api/import",
+    //     maxFilesize: 10,
+    //     method:"post",
+    //     acceptedFiles: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel',
+    //     paramName:"userfile",
+    //     dictInvalidFileType:"Type file ini tidak dizinkan",
+    //     addRemoveLinks:true,
+    //     autoProcessQueue:true,
+    //     //params: {jenis: $("#jenis").val() },                    
+    //     init: function() {  
+    //         var thisDropzone = this; 
+    //     }    
+    // });
+
+    // excel_upload.on("sending",function(a,b,c){         
+    //     c.append("jenis", $("#jenis").val()); 
+    // });
+
+    
 </script>
   </body>
 </html>

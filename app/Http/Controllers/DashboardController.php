@@ -11,6 +11,7 @@ use App\Transsactions;
 use App\DataWarga;
 use App\Report;
 use DB;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
 class DashboardController extends Controller
 {
@@ -21,25 +22,27 @@ class DashboardController extends Controller
 
     public function import(Request $request)
     {
-
-        if ($request->hasFile('file')) {
+        
+        if ($request->hasFile('file') && $request->input('jenis') == "iuran") {
+            dd("masuk iuran");
             $extension = File::extension($request->file->getClientOriginalName());
             if ($extension == "xlsx" || $extension == "xls" || $extension == "csv") {
                 $path   = $request->file->getRealPath();
-                $data   = Excel::load($path)->get();
-                dd($data);exit();
+                config(['excel.import.startRow' => 4]);
+                $data   = Excel::selectSheetsByIndex(0)->load($path)->get();
+                
 
                 //truncate
                 $trun_rt = RTNo::truncate();
                 $trun_member = Members::truncate();
                 $trun_transaction = Transsactions::truncate();
-
                 $rt_data = [];
                 foreach ($data as $key => $value) {
-
+                   
                     if (!empty($value['nama_pemilik'])) {
                         // Insert No RT
                         $rt = $value['rt'];
+
                         if (!in_array($rt, $rt_data)) {
                             $rt_data[]          = $rt;
                             $model_nort         = new RTNo();
@@ -69,7 +72,7 @@ class DashboardController extends Controller
                             'apr_19'    => !empty($value['apr_19']) ? $value['apr_19'] : 0,
                             'mei_19'    => !empty($value['mei_19']) ? $value['mei_19'] : 0,
                             'juni_19'   => !empty($value['juni_19']) ? $value['juni_19'] : 0,
-                            'jul19'     => !empty($value['jul19']) ? $value['jul19'] : 0,
+                            'jul_19'     => !empty($value['jul19']) ? $value['jul19'] : 0,
                             'agust_19'  => !empty($value['agust_19']) ? $value['agust_19'] : 0,
                             'sep_19'    => !empty($value['sep_19']) ? $value['sep_19'] : 0,
                             'okt_19'    => !empty($value['okt_19']) ? $value['okt_19'] : 0,
@@ -100,6 +103,23 @@ class DashboardController extends Controller
 
                     return response()->json($result, 200);
                 }
+            }
+        }else if ($request->hasFile('file') && $request->input('jenis') == "ppl") {
+           
+            $extension = File::extension($request->file->getClientOriginalName());
+            if ($extension == "xlsx" || $extension == "xls" || $extension == "csv") {
+                $path   = $request->file->getRealPath();
+
+                config(['excel.import.startRow' => 5]);
+                $data   = Excel::selectSheetsByIndex(0)->load($path)->get();
+                 dd($data->toArray());
+                // foreach ($data->toArray() as $key => $value) {
+
+                //     foreach ($value as $row) {
+                       
+                //     }
+                // }
+                 
             }
         }
     }
