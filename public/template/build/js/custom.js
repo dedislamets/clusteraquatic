@@ -2535,7 +2535,7 @@ if (typeof NProgress != 'undefined') {
 				  keys: true
 				});
 
-				$('#datatable-responsive').DataTable();
+				//$('#datatable-responsive').DataTable();
 
 				$('#datatable-scroller').DataTable({
 				  ajax: "js/datatables/json/scroller-demo.json",
@@ -2552,12 +2552,12 @@ if (typeof NProgress != 'undefined') {
 					}
 				});
 
-				$('#table-report').DataTable({
-					fixedHeader: true,
-					ordering: false,
-					paging:false,
-					searching: false
-				});				
+				// $('#table-report').DataTable({
+				// 	fixedHeader: true,
+				// 	ordering: false,
+				// 	paging:false,
+				// 	searching: false
+				// });				
 
 				var $datatable = $('#datatable-checkbox');
 
@@ -5246,7 +5246,7 @@ if (typeof NProgress != 'undefined') {
 						iuranTable += '<tbody>';
 								$.each( tbody, function( keys_tbody, vals_tbody ) {
 									iuranTable += '<tr>';
-									
+
 										$.each( thead_data, function( keys_thead, vals_thead ) {
 											if (vals_tbody[vals_thead] == '0,00' || vals_tbody[vals_thead] == undefined) {
 												if (vals_tbody[vals_thead] == undefined) {
@@ -5315,6 +5315,11 @@ if (typeof NProgress != 'undefined') {
 		//}, 5000);
 	}
 
+	function numberWithCommas(number) {
+		var newval = parseFloat(Math.round(number * 100) / 100).toFixed(2);
+		return newval.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
 	function dataRT()
 	{
 		$.ajax({
@@ -5343,36 +5348,57 @@ if (typeof NProgress != 'undefined') {
 	        contentType: 'application/json',
 	        success: function(report) {
 	        	reportData = '';
-	        	reportData += '<table id="datatable-responsive" class="table table-striped table-bordered">';
-					reportData += '<thead>';
+	        	reportData += '<table id="datatable-responsive" class="table table-bordered">';
+					reportData += '<thead style="font-weight: bold;">';
 						reportData += '<tr>';
-							reportData += '<td>Department</td>';
-							reportData += '<td>PIC</td>';
-							reportData += '<td>Anggaran Tahunan</td>';
-							reportData += '<td>Anggaran Bulanan</td>';
+							reportData += '<td style="vertical-align: middle;background-color: lightblue;" rowspan="2">Department</td>';
+							reportData += '<td style="vertical-align: middle;background-color: lightblue;"  rowspan="2">PIC</td>';
+							reportData += '<td  rowspan="2" style="vertical-align: middle;text-align:right;background-color: darkgreen;color: #fff;">Anggaran Tahunan</td>';
+							reportData += '<td  rowspan="2" style="vertical-align: middle;text-align:right;background-color: darkgreen;color: #fff;">Anggaran Bulanan</td>';
+							reportData += '<td style="text-align:center" colspan="3">Actual</td>';
+						reportData += '</tr>';
+						reportData += '<tr>';
+							reportData += '<td style="text-align:right">YTD</td>';
+							reportData += '<td style="text-align:right">Bulan Lalu</td>';
+							reportData += '<td style="text-align:right">Saving YTD</td>';
 						reportData += '</tr>';
 					reportData += '</thead>';
 					reportData += '<tbody>';
 						$.each( report, function( key, val ) {
 							reportData += '<tr>';
-								reportData += '<td>'+ val.departement +'</td>';
-								reportData += '<td>'+ val.pic +'</td>';
-								reportData += '<td>'+ val.anggaran_tahun +'</td>';
-								reportData += '<td>'+ val.anggaran_bulan +'</td>';
+								if(val.departement.includes("Total") || val.departement.includes("total") || val.departement.includes("Results")){
+									reportData += '<td style="background-color: lightblue;font-weight:bold;">'+ val.departement +'</td>';
+									reportData += '<td style="background-color: lightblue;font-weight:bold;">'+ val.pic +'</td>';	
+									reportData += '<td style="text-align:right;font-weight:bold;background-color: darkgreen;color: #fff;">'+ numberWithCommas(val.anggaran_tahun) +'</td>';
+									reportData += '<td style="text-align:right;font-weight:bold;background-color: forestgreen;color: #fff;">'+ numberWithCommas(val.anggaran_bulan) +'</td>';
+									reportData += '<td style="text-align:right;font-weight:bold;">'+ numberWithCommas(val.ytd) +'</td>';
+									reportData += '<td style="text-align:right;font-weight:bold;">'+ numberWithCommas(val.current_month) +'</td>';
+									reportData += '<td style="text-align:right;font-weight:bold;">'+ numberWithCommas(val.saving_ytd) +'</td>';
+								}else{
+									reportData += '<td style="background-color: lightblue;">'+ val.departement +'</td>';
+									reportData += '<td style="background-color: lightblue;">'+ val.pic +'</td>';
+									reportData += '<td style="text-align:right;background-color: darkgreen;color: #fff;">'+ numberWithCommas(val.anggaran_tahun) +'</td>';
+									reportData += '<td style="text-align:right;background-color: forestgreen;color: #fff;">'+ numberWithCommas(val.anggaran_bulan) +'</td>';
+									reportData += '<td style="text-align:right">'+ numberWithCommas(val.ytd) +'</td>';
+									reportData += '<td style="text-align:right">'+ numberWithCommas(val.current_month) +'</td>';
+									reportData += '<td style="text-align:right">'+ numberWithCommas(val.saving_ytd) +'</td>';
+								}
+								
+								
 							reportData += '</tr>';
 						});
 					reportData += '</tbody>';
 	        	reportData += '</table>';
 	        	$('#tableReport').html(reportData);
-				init_DataTables();
+				//init_DataTables();
 	     	}
 	 	});
 	}
 
 	$(document).ready(function() {
-		$('#selectmonth').selectpicker();
-		$('#selectstatus').selectpicker();
-		dataRT();	
+		//$('#selectmonth').selectpicker();
+		//$('#selectstatus').selectpicker();
+		
 		init_sparklines();
 		init_flot_chart();
 		init_sidebar();
@@ -5407,21 +5433,7 @@ if (typeof NProgress != 'undefined') {
 		init_CustomNotification();
 		init_autosize();
 		init_autocomplete();
-		
-		
-		dataReport();
-		setTimeout(function(){ 
-			chartIuran();dataIuran(); 
-		}, 3000);
 		// var dashboard_task_handle;
 		// dashboard_task_handle = setInterval(function(){chartIuran()}, 5000);
 	});	
 	
-	$(document).ready(function() {
-
-	    $('#btn-refresh').on('click', function() {
-	    	chartIuran();
-	    	dataIuran(); 
-	    });
-	});
-

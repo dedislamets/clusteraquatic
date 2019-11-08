@@ -11,7 +11,7 @@ use App\Transsactions;
 use App\DataWarga;
 use App\Report;
 use DB;
-use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+
 
 class DashboardController extends Controller
 {
@@ -24,14 +24,13 @@ class DashboardController extends Controller
     {
         
         if ($request->hasFile('file') && $request->input('jenis') == "iuran") {
-            dd("masuk iuran");
+           
             $extension = File::extension($request->file->getClientOriginalName());
             if ($extension == "xlsx" || $extension == "xls" || $extension == "csv") {
                 $path   = $request->file->getRealPath();
                 config(['excel.import.startRow' => 4]);
                 $data   = Excel::selectSheetsByIndex(0)->load($path)->get();
-                
-
+            
                 //truncate
                 $trun_rt = RTNo::truncate();
                 $trun_member = Members::truncate();
@@ -107,19 +106,50 @@ class DashboardController extends Controller
         }else if ($request->hasFile('file') && $request->input('jenis') == "ppl") {
            
             $extension = File::extension($request->file->getClientOriginalName());
+
             if ($extension == "xlsx" || $extension == "xls" || $extension == "csv") {
                 $path   = $request->file->getRealPath();
+                config(['excel.import.startRow' => 3]);
+                $data   = Excel::selectSheets("Upload")->load($path)->get();
+                
+                $get_date = date("m-Y");
+                $insert_report = false;
+                $trun_report = Report::where('bulan',$get_date)->delete();
+                foreach ($data as $key => $value) {
 
-                config(['excel.import.startRow' => 5]);
-                $data   = Excel::selectSheetsByIndex(0)->load($path)->get();
-                 dd($data->toArray());
-                // foreach ($data->toArray() as $key => $value) {
-
-                //     foreach ($value as $row) {
+                    if (!empty($value['departement'])) {
+                        $model_report            = new Report();
+                        $model_report->departement        = !empty($value['departement']) ? $value['departement'] : '';
+                        $model_report->pic               = !empty($value['pic']) ? $value['pic'] : '';
+                        $model_report->anggaran_tahun    = !empty($value['anggaran_tahun_semua_dept']) ? $value['anggaran_tahun_semua_dept'] : '0';
+                        $model_report->flexibity_rate    = !empty($value['flexibity_rate']) ? $value['flexibity_rate'] : 0;
+                        $model_report->anggaran_bulan    = !empty($value['anggaran_bulan']) ? $value['anggaran_bulan'] : 0;
+                        $model_report->ytd               = !empty($value['ytd']) ? $value['ytd'] : 0; 
+                        $model_report->current_month     = !empty($value['current_month']) ? $value['current_month'] : 0; 
+                        $model_report->bulan             = $get_date;  
+                        $model_report->saving_ytd        = !empty($value['saving_ytd']) ? $value['saving_ytd'] : 0;  
                        
-                //     }
-                // }
-                 
+                        $insert_report                   = $model_report->save();
+
+                        
+                    }
+                }
+
+                if ($insert_report) {
+                    $result = [
+                        'status' => true,
+                        'message' => 'Import success',
+                    ];
+
+                    return response()->json($result, 200);
+                } else{
+                    $result = [
+                        'status' => true,
+                        'message' => 'Import failed',
+                    ];
+
+                    return response()->json($result, 200);
+                }
             }
         }
     }

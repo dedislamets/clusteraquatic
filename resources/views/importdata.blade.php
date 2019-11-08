@@ -55,7 +55,6 @@
                   <li><a><i class="fa fa-table"></i> Excel <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="{{ url('/import_data') }}">Import</a></li>
-                      <li><a href="tables_dynamic.html">Export</a></li>
                     </ul>
                   </li>
                 </ul>

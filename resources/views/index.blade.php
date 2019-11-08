@@ -62,7 +62,6 @@
                   <li><a><i class="fa fa-table"></i> Excel <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="{{ url('/import_data') }}">Import</a></li>
-                      <li><a href="tables_dynamic.html">Export</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -241,5 +240,23 @@
     <script src="public/template/build/js/custom.js"></script>
     <script src="public/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="public/vendors/bootstrap-select/dist/js/i18n/defaults-id_ID.min.js"></script>
+    <script type="text/javascript">
+
+      $(document).ready(function() {
+        $('#selectmonth').selectpicker();
+        $('#selectstatus').selectpicker();
+        dataRT(); 
+        dataReport();
+        setTimeout(function(){ 
+          chartIuran();dataIuran(); 
+        }, 3000);
+
+        $('#btn-refresh').on('click', function() {
+          chartIuran();
+          dataIuran(); 
+        });
+      })
+
+    </script>
   </body>
 </html>
