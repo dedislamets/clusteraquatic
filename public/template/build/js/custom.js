@@ -5395,6 +5395,53 @@ if (typeof NProgress != 'undefined') {
 	 	});
 	}
 
+	function dataReportDetail() {
+		$.ajax({
+	        type: "GET",
+	        url: 'api/reportdetail',
+	        contentType: 'application/json',
+	        success: function(report) {
+	        	reportData = '';
+	        	reportData += '<table id="datatable-responsive" class="table table-bordered">';
+					reportData += '<thead style="font-weight: bold;    background-color: #646464;color: #fff;">';
+						reportData += '<tr>';
+							reportData += '<td style="vertical-align: middle;" rowspan="2">Voucher No</td>';
+							reportData += '<td style="vertical-align: middle;" colspan="2"  rowspan="2">Keterangan</td>';
+							reportData += '<td colspan="2" style="vertical-align: middle;text-align:right;">Mutasi</td>';
+							reportData += '<td  rowspan="2" style="vertical-align: middle;text-align:right;">Saldo Balance</td>';
+						reportData += '</tr>';
+						reportData += '<tr>';
+							reportData += '<td style="text-align:right">Credit</td>';
+							reportData += '<td style="text-align:right">Debit</td>';
+						reportData += '</tr>';
+					reportData += '</thead>';
+					reportData += '<tbody>';
+						$.each( report['data'], function( key, val ) {
+							reportData += '<tr>';
+								reportData += '<td style="font-weight:bold;">'+ val.voucher_no +'</td>';
+								reportData += '<td style="font-weight:bold;">'+ val.dept +'</td>';	
+								reportData += '<td style="font-weight:bold;">'+ val.keterangan +'</td>';	
+								reportData += '<td style="text-align:right;">'+ numberWithCommas(val.debit) +'</td>';
+								reportData += '<td style="text-align:right;">'+ numberWithCommas(val.credit) +'</td>';
+								reportData += '<td style="text-align:right;">'+ numberWithCommas(val.saldo) +'</td>';
+
+							reportData += '</tr>';
+						});
+						reportData += '<tr>';
+							reportData += '<td style="font-weight:bold;" colspan="3">Total</td>';
+							reportData += '<td style="text-align:right;font-weight:bold;">'+ numberWithCommas(report['debit']) +'</td>';
+							reportData += '<td style="text-align:right;font-weight:bold;">'+ numberWithCommas(report['credit']) +'</td>';
+							reportData += '<td style="text-align:right;font-weight:bold;">'+ numberWithCommas(report['saldo']) +'</td>';
+
+						reportData += '</tr>';
+					reportData += '</tbody>';
+	        	reportData += '</table>';
+	        	$('.modal-body').html(reportData);
+				//init_DataTables();
+	     	}
+	 	});
+	}
+
 	$(document).ready(function() {
 		//$('#selectmonth').selectpicker();
 		//$('#selectstatus').selectpicker();

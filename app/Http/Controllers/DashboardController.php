@@ -10,6 +10,7 @@ use App\Members;
 use App\Transsactions;
 use App\DataWarga;
 use App\Report;
+use App\ReportDetail;
 use DB;
 
 
@@ -108,6 +109,8 @@ class DashboardController extends Controller
             $extension = File::extension($request->file->getClientOriginalName());
 
             if ($extension == "xlsx" || $extension == "xls" || $extension == "csv") {
+
+                // Worksheet Main
                 $path   = $request->file->getRealPath();
                 config(['excel.import.startRow' => 3]);
                 $data   = Excel::selectSheets("Upload")->load($path)->get();
@@ -131,6 +134,26 @@ class DashboardController extends Controller
                        
                         $insert_report                   = $model_report->save();
 
+                        
+                    }
+                }
+
+                // Worksheet Detail
+                config(['excel.import.startRow' => 6]);
+                $data_detail   = Excel::selectSheets("Report detail")->load($path)->get();
+                //dd($data_detail);
+                $trun_report_detail = ReportDetail::where('bulan',$get_date)->delete();
+                foreach ($data_detail as $key => $value) {
+                    if (!empty($value['dept']) || !empty($value['keterangan'])) {
+                        $model_report_detail                = new ReportDetail();
+                        $model_report_detail->voucher_no    = !empty($value['voucher_no']) ? $value['voucher_no'] : '';
+                        $model_report_detail->dept          = !empty($value['dept']) ? $value['dept'] : '';
+                        $model_report_detail->keterangan    = !empty($value['keterangan']) ? $value['keterangan'] : '';
+                        $model_report_detail->debit         = !empty($value['debit']) ? $value['debit'] : '0';
+                        $model_report_detail->credit        = !empty($value['credit']) ? $value['credit'] : 0;
+                        $model_report_detail->saldo         = !empty($value['saldo_balance']) ? $value['saldo_balance'] : 0; 
+                        $model_report_detail->bulan         = $get_date;  
+                        $model_report_detail->save();
                         
                     }
                 }
@@ -396,6 +419,21 @@ class DashboardController extends Controller
     {
         $data = Report::all();
 
+        return response()->json($data);
+    }
+    public function reportDataDetail()
+    {
+        $data = [];
+        $data['data'] = ReportDetail::all();
+        $bulan = date("m-Y");
+
+        $total = DB::select( DB::raw("SELECT sum(credit) as credit,sum(debit) as debit, sum(saldo) as saldo FROM `detail_report` WHERE bulan='" . $bulan . "'") );
+
+        foreach ($total as $val) {
+            $data['credit'] = $val->credit;
+            $data['debit'] = $val->debit;
+            $data['saldo'] = $val->debit - $val->credit;
+        }
         return response()->json($data);
     }
 }

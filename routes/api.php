@@ -23,3 +23,4 @@ Route::get('pie_chart', 'DashboardController@pieChart');
 Route::get('iuran_warga', 'DashboardController@dataTransactions');
 Route::get('data_rt', 'DashboardController@data_rt');
 Route::get('report', 'DashboardController@reportData');
+Route::get('reportdetail', 'DashboardController@reportDataDetail');

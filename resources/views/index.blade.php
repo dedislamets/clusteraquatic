@@ -188,7 +188,11 @@
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                       <div class="x_title">
-                        <h2>Report PPL</h2>
+                        <h2>Report PPL
+                          <!-- <button type="button" class="btn btn-round btn-success">Detail</button> -->
+                          <button type="button" class="btn btn-round btn-primary" data-toggle="modal" data-target=".modal">Rincian</button>
+                        </h2>
+
                         <div class="clearfix"></div>
                       </div>
                       <div class="x_content">
@@ -202,6 +206,24 @@
           </div>
         </div>
         <!-- /page content -->
+        <div class="modal" tabindex="-1" role="dialog" aria-modal="true" style="display: none; padding-right: 16px;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Rincian PPL</h4>
+              </div>
+              <div class="modal-body">
+               
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- footer content -->
         <footer>
@@ -247,6 +269,7 @@
         $('#selectstatus').selectpicker();
         dataRT(); 
         dataReport();
+        dataReportDetail();
         setTimeout(function(){ 
           chartIuran();dataIuran(); 
         }, 3000);
