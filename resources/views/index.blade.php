@@ -23,7 +23,7 @@
     <link href="public/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <style type="text/css">
       .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
-          width: 100%;
+          width: 320px;
       }
       ul.bar_tabs>li {
             width: 30%;
@@ -37,7 +37,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+              <a href="index.html" class="site_title"><span>Aquatic Cluster</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -119,9 +119,6 @@
                   <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Iuran Warga</a>
-                </li>
-                <li class="nav-item">
                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">PPL</a>
                 </li>
               </ul>
@@ -155,7 +152,7 @@
                       </select>
                     </div>
                     <div class="col-md-2 col-sm-2 col-xs-12">
-                      <button type="button" id="btn-refresh" class="btn btn-block btn-success">Refresh</button>
+                      <button type="button" id="btn-refresh" class="btn btn-success">Refresh</button>
                     </div>
                   </div>
                   <div class="col-md-4 col-sm-4 col-xs-12">
@@ -168,20 +165,19 @@
                         <div id="iuranChart" style="height:350px;"></div>
                       </div>
                     </div>
+                    
                   </div>
                 </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="x_panel">
-                      <div class="x_title">
-                        <h2>Iuran Warga</h2>
-                        <div class="clearfix"></div>
-                      </div>
-                      <div class="x_content">
-                        <div id="tableIuran"></div>
-                      </div>
+                <div class="col-md-8 col-sm-8 col-xs-12">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2>Iuran Warga</h2>
+                      <div class="clearfix"></div>
                     </div>
-                  </div> 
+                    <div class="x_content">
+                      <div id="tableIuran"></div>
+                    </div>
+                  </div>
                 </div>
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                 
@@ -196,7 +192,9 @@
                         <div class="clearfix"></div>
                       </div>
                       <div class="x_content">
-                        <div id="tableReport"></div>
+                        <div class="table-responsive">
+                          <div id="tableReport"></div>
+                        </div>
                       </div>
                     </div>
                   </div>

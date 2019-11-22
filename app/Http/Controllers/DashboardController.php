@@ -187,19 +187,53 @@ class DashboardController extends Controller
             $wargaid_duplicate[] = $val_duplicate->warga_id;
         }
 
+        //Cari Warga yg duplicate
         $data_notin = [];
         $datas = Transsactions::whereIn('warga_id', $wargaid_duplicate)->get();
+
         foreach ($datas as $rec_warga) {
+           
             $pembayaran = json_decode($rec_warga['pembayaran']);
             $data_notin[] = $rec_warga['id'];
         }
 
-        $update_data = [];
-        $id_notin = json_encode($data_notin);
-        $id_notin = str_replace('[', '', str_replace(']', '', $id_notin));
-        $filter_data = json_encode($filter['rt']);
-        $filter_data = str_replace('[', '', str_replace(']', '', $filter_data));
-        $query = empty($filter['rt']) ?  'SELECT a.* FROM `transaksi` a INNER JOIN warga b on a.warga_id = b.id WHERE a.id NOT IN ('.$id_notin.')' : 'SELECT a.* FROM `transaksi` a INNER JOIN warga b on a.warga_id = b.id WHERE a.id NOT IN ('.$id_notin.') AND b.nort_id IN('.$filter_data.')';
+
+        // $update_data = [];
+        // $id_notin = json_encode($data_notin);
+        // $id_notin = str_replace('[', '', str_replace(']', '', $id_notin));
+        
+        // $filter_data = json_encode($filter['rt']);
+        // $filter_data = str_replace('[', '', str_replace(']', '', $filter_data));
+
+        // if(empty($filter['rt'])){
+        //     $query = 'SELECT a.* FROM `transaksi` a INNER JOIN warga b on a.warga_id = b.id WHERE a.id NOT IN ('.$id_notin.')';
+        // }else{
+        //     $query = 'SELECT a.* FROM `transaksi` a INNER JOIN warga b on a.warga_id = b.id WHERE a.id NOT IN ('.$id_notin.') AND b.nort_id IN('.$filter_data.')';
+        // }
+
+        $filter_query = array();
+        $month = isset($filter['month'])? $filter['month'] : '';
+        if($month !=""){
+            $filter_query['month'] = implode("','",$month);
+        }
+        $rt = isset($filter['rt'])? $filter['rt'] : '';
+        if($rt !=""){
+            $filter_query['rt'] = implode("','",$rt);
+        }
+        $status = isset($filter['status'])? $filter['status'] : '';
+        if($status !=""){
+            $filter_query['status'] = implode("','",$status);
+        }
+        
+        $query = "SELECT a.* FROM `transaksi` a INNER JOIN warga b on a.warga_id = b.id";
+        if(!empty($filter_query)){
+            $query .= " WHERE ";
+            if(isset($filter_query['rt']) ){
+                $query .="b.nort_id IN('". $filter_query['rt'] ."')";
+            }
+        }
+        dd($query);
+
         $data = DB::select(DB::raw($query));
 
         if (!empty($filter['month'])) {
@@ -209,19 +243,22 @@ class DashboardController extends Controller
             }
         }
 
+        $data_pembayaran = [];
         foreach ($data as $key => $value) {
-            $data_warga = Members::where('id', $value->warga_id)->first();
-            $nama_pemilik = $data_warga['nama'];
-            $blok = $data_warga['blok'];
-            $rt_data = RTNo::where('id', $data_warga['nort_id'])->first();
-            $rt_data = $rt_data['no_rt'];
+            $data_warga     = Members::where('id', $value->warga_id)->first();
+            $nama_pemilik   = $data_warga['nama'];
+            $blok           = $data_warga['blok'];
+            $rt_data        = RTNo::where('id', $data_warga['nort_id'])->first();
+            $rt_data        = $rt_data['no_rt'];
 
             $pembayaran = json_decode($value->pembayaran, true);
-            $data_pembayaran = [];
             $i = 0;
             foreach ($pembayaran as $keys => $values) {
+
                 if (!empty($filter_month)) {
+
                     if (in_array($keys, $filter_month)) {  
+
                        if (!empty($filter['status']) && count($filter['status']) == 1 && $filter['status'][0] == 'sudah' && !empty($values)) {
                             $data_pembayaran['nama_pemilik'] = $nama_pemilik;
                             $data_pembayaran['blok'] = $blok;
@@ -249,9 +286,11 @@ class DashboardController extends Controller
                 }
                 $i++;
             }
-
+           
             if (!empty($data_pembayaran)) {
+
                 $transaksi = $data_pembayaran;
+                //unset($data_pembayaran);
                 $update_data[] = $transaksi;
             }
 
@@ -259,6 +298,7 @@ class DashboardController extends Controller
                 $update_data = [];
             }
         }
+        //dd($update_data);
 
         if (!empty($update_data[0])) {
             $column_table = array_keys($update_data[0]);

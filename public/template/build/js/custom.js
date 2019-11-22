@@ -5402,7 +5402,7 @@ if (typeof NProgress != 'undefined') {
 	        contentType: 'application/json',
 	        success: function(report) {
 	        	reportData = '';
-	        	reportData += '<table id="datatable-responsive" class="table table-bordered">';
+	        	reportData += '<div class="table-responsive"><table id="datatable-responsive" class="table table-bordered">';
 					reportData += '<thead style="font-weight: bold;    background-color: #646464;color: #fff;">';
 						reportData += '<tr>';
 							reportData += '<td style="vertical-align: middle;" rowspan="2">Voucher No</td>';
@@ -5435,7 +5435,7 @@ if (typeof NProgress != 'undefined') {
 
 						reportData += '</tr>';
 					reportData += '</tbody>';
-	        	reportData += '</table>';
+	        	reportData += '</table></div>';
 	        	$('.modal-body').html(reportData);
 				//init_DataTables();
 	     	}
