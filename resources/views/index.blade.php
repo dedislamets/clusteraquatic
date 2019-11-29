@@ -125,27 +125,37 @@
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade active in" id="home" role="tabpanel" aria-labelledby="home-tab">
                   <div class="col-md-12" style="margin-bottom: 10px;padding-bottom: 10px;border-bottom: 2px solid #E6E9ED;">
-                    <div class="col-md-1"><h3 style="margin-bottom: 0">Filter</h2></div>
+                    <div class="col-md-1">
+                      <h3 style="margin-bottom: 0">Filter</h2>
+                    </div>
                     <div class="col-md-3 col-sm-3 col-xs-12">
                       <select id="selectpicker" style="width: 100%" multiple data-actions-box="true"></select>
                     </div>
-                    <div class="col-md-3 col-sm-3 col-xs-12">
-                      <select id="selectmonth" style="width: 100%" multiple data-actions-box="true">
-                        <option value="jan" selected>Januari</option>
-                        <option value="feb" selected>Februari</option>
-                        <option value="mar" selected>Maret</option>
-                        <option value="apr" selected>April</option>
-                        <option value="mei" selected>Mei</option>
-                        <option value="juni" selected>Juni</option>
-                        <option value="jul" selected>Juli</option>
-                        <option value="agust" selected>Agustus</option>
-                        <option value="sep" selected>September</option>
-                        <option value="okt" selected>Oktober</option>
-                        <option value="nov" selected>November</option>
-                        <option value="des" selected>Desember</option>
+                    <div class="col-md-1 col-sm-1 col-xs-12">
+                      <select id="selectyear" style="width: 100%" class="form-control">
+                        <option value="2018" >2018</option>
+                        <option value="2019" selected>2019</option>
+                        <option value="2020" >2020</option>
+                        <option value="2021" >2021</option>
                       </select>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12">
+                      <select id="selectmonth" style="width: 100%" multiple data-actions-box="true">
+                        <option value="01" selected>Januari</option>
+                        <option value="02" selected>Februari</option>
+                        <option value="03" selected>Maret</option>
+                        <option value="04" selected>April</option>
+                        <option value="05" selected>Mei</option>
+                        <option value="06" selected>Juni</option>
+                        <option value="07" selected>Juli</option>
+                        <option value="08" selected>Agustus</option>
+                        <option value="09" selected>September</option>
+                        <option value="10" selected>Oktober</option>
+                        <option value="11" selected>November</option>
+                        <option value="12" selected>Desember</option>
+                      </select>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
                       <select id="selectstatus" style="width: 100%" multiple data-actions-box="true">
                         <option value="sudah" selected>Sudah Bayar</option>
                         <option value="belum" selected>Belum Bayar</option>
@@ -264,6 +274,7 @@
 
       $(document).ready(function() {
         $('#selectmonth').selectpicker();
+        //$('#selectyear').selectpicker();
         $('#selectstatus').selectpicker();
         dataRT(); 
         dataReport();

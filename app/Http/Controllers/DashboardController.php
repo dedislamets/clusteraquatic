@@ -23,22 +23,22 @@ class DashboardController extends Controller
 
     public function import(Request $request)
     {
-        
+        set_time_limit(0);
         if ($request->hasFile('file') && $request->input('jenis') == "iuran") {
            
             $extension = File::extension($request->file->getClientOriginalName());
             if ($extension == "xlsx" || $extension == "xls" || $extension == "csv") {
                 $path   = $request->file->getRealPath();
                 config(['excel.import.startRow' => 4]);
-                $data   = Excel::selectSheetsByIndex(0)->load($path)->get();
-            
+                $data   = Excel::selectSheetsByIndex(0)->load($path)->get()->toArray();
                 //truncate
                 $trun_rt = RTNo::truncate();
                 $trun_member = Members::truncate();
                 $trun_transaction = Transsactions::truncate();
                 $rt_data = [];
+                $log = [];
                 foreach ($data as $key => $value) {
-                   
+
                     if (!empty($value['nama_pemilik'])) {
                         // Insert No RT
                         $rt = $value['rt'];
@@ -62,36 +62,131 @@ class DashboardController extends Controller
                             $insert_warga           = $model_warga->save();
 
                         // Insert Transaktion
-                        $warga_id = Members::where('nama', $value['nama_pemilik'])->first();
+                        $warga_id = Members::where('nama', $value['nama_pemilik'])
+                                    ->where('no_rumah', $value['no_rumah'])->first();
                         $warga_id = $warga_id['id'];
 
-                        $bulan_pembayaran = [
-                            'jan_19'    => !empty($value['jan_19']) ? $value['jan_19'] : 0,
-                            'feb_19'    => !empty($value['feb_19']) ? $value['feb_19'] : 0,
-                            'mar_19'    => !empty($value['mar_19']) ? $value['mar_19'] : 0,
-                            'apr_19'    => !empty($value['apr_19']) ? $value['apr_19'] : 0,
-                            'mei_19'    => !empty($value['mei_19']) ? $value['mei_19'] : 0,
-                            'juni_19'   => !empty($value['juni_19']) ? $value['juni_19'] : 0,
-                            'jul_19'     => !empty($value['jul19']) ? $value['jul19'] : 0,
-                            'agust_19'  => !empty($value['agust_19']) ? $value['agust_19'] : 0,
-                            'sep_19'    => !empty($value['sep_19']) ? $value['sep_19'] : 0,
-                            'okt_19'    => !empty($value['okt_19']) ? $value['okt_19'] : 0,
-                            'nov_19'    => !empty($value['nov_19']) ? $value['nov_19'] : 0,
-                            'des_19'    => !empty($value['des_19']) ? $value['des_19'] : 0,
-                        ];
 
-                        $model_transaksi             = new Transsactions();
-                        $model_transaksi->warga_id   = $warga_id;
-                        $model_transaksi->pembayaran = json_encode($bulan_pembayaran);
-                        $insert_transaksi            = $model_transaksi->save();
+                        $tahun = date("Y");
+                        
+                        if (array_key_exists("jan_19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "01-". $tahun;
+                            $model_transaksi->pembayaran = (empty($value["jan_19"])? 0 : $value["jan_19"] );
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+                        if (array_key_exists("feb_19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "02-". $tahun;
+                            $model_transaksi->pembayaran = (empty($value["feb_19"])? 0 : $value["feb_19"] );
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+                        if (array_key_exists("mar_19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "03-". $tahun;
+                            $model_transaksi->pembayaran = (empty($value["mar_19"])? 0 : $value["mar_19"] );
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+                        if (array_key_exists("apr_19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "04-". $tahun;
+                            $model_transaksi->pembayaran = (empty($value["apr_19"])? 0 : $value["apr_19"] );
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+                        if (array_key_exists("mei_19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "05-". $tahun;
+                            $model_transaksi->pembayaran = (empty($value["mei_19"])? 0 : $value["mei_19"] );
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+                        if (array_key_exists("juni_19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "06-". $tahun;
+                            $model_transaksi->pembayaran = (empty($value["juni_19"])? 0 : $value["juni_19"] );
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+                        if (array_key_exists("jul19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "07-". $tahun;
+                            $model_transaksi->pembayaran = (empty($value["jul19"])? 0 : $value["jul19"] );
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+                        if (array_key_exists("agust_19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "08-". $tahun;
+                            $model_transaksi->pembayaran = (empty($value["agust_19"])? 0 : $value["agust_19"] );
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+                        if (array_key_exists("sep_19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "09-". $tahun;
+                            $byar=0;
+                            if(!empty( trim($value["sep_19"]) )){
+                                $byar = trim($value["sep_19"]);
+                            }
+                            $model_transaksi->pembayaran = $byar;
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+                        if (array_key_exists("okt_19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "10-". $tahun;
+                            $model_transaksi->pembayaran = (empty($value["okt_19"])? 0 : $value["okt_19"] );
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+                        if (array_key_exists("nov_19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "11-". $tahun;
+                            $model_transaksi->pembayaran = (empty($value["nov_19"])? 0 : $value["nov_19"] );
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+                        if (array_key_exists("des_19",$value)) {  
+                            $model_transaksi             = new Transsactions();
+                            $model_transaksi->warga_id   = $warga_id;
+                            $model_transaksi->periode    = "12-". $tahun;
+                            $model_transaksi->pembayaran = (empty($value["des_19"])? 0 : $value["des_19"] );
+                            $insert_transaksi            = $model_transaksi->save();
+                        }
+
+
+                        // $bulan_pembayaran = [
+                        //     'jan_19'    => !empty($value['jan_19']) ? $value['jan_19'] : 0,
+                        //     'feb_19'    => !empty($value['feb_19']) ? $value['feb_19'] : 0,
+                        //     'mar_19'    => !empty($value['mar_19']) ? $value['mar_19'] : 0,
+                        //     'apr_19'    => !empty($value['apr_19']) ? $value['apr_19'] : 0,
+                        //     'mei_19'    => !empty($value['mei_19']) ? $value['mei_19'] : 0,
+                        //     'juni_19'   => !empty($value['juni_19']) ? $value['juni_19'] : 0,
+                        //     'jul_19'    => !empty($value['jul19']) ? $value['jul19'] : 0,
+                        //     'agust_19'  => !empty($value['agust_19']) ? $value['agust_19'] : 0,
+                        //     'sep_19'    => !empty($value['sep_19']) ? $value['sep_19'] : 0,
+                        //     'okt_19'    => !empty($value['okt_19']) ? $value['okt_19'] : 0,
+                        //     'nov_19'    => !empty($value['nov_19']) ? $value['nov_19'] : 0,
+                        //     'des_19'    => !empty($value['des_19']) ? $value['des_19'] : 0,
+                        // ];
+
+                        // $model_transaksi             = new Transsactions();
+                        // $model_transaksi->warga_id   = $warga_id;
+                        // $model_transaksi->pembayaran = json_encode($bulan_pembayaran);
+                        // $insert_transaksi            = $model_transaksi->save();
+                        
 
                     }
                 }
-
                 if ($insert_rt && $insert_warga && $insert_transaksi) {
                     $result = [
                         'status' => true,
                         'message' => 'Import success',
+                        'data' => $log
                     ];
 
                     return response()->json($result, 200);
@@ -213,8 +308,9 @@ class DashboardController extends Controller
 
         $filter_query = array();
         $month = isset($filter['month'])? $filter['month'] : '';
+        $year = isset($filter['year'])? $filter['year'] : '';
         if($month !=""){
-            $filter_query['month'] = implode("','",$month);
+            $filter_query['month'] = implode("-". $year ."','",$month). "-" .$year ;
         }
         $rt = isset($filter['rt'])? $filter['rt'] : '';
         if($rt !=""){
@@ -222,83 +318,68 @@ class DashboardController extends Controller
         }
         $status = isset($filter['status'])? $filter['status'] : '';
         if($status !=""){
-            $filter_query['status'] = implode("','",$status);
+            $filter_query['status'] = $status;
         }
-        
-        $query = "SELECT a.* FROM `transaksi` a INNER JOIN warga b on a.warga_id = b.id";
-        if(!empty($filter_query)){
-            $query .= " WHERE ";
-            if(isset($filter_query['rt']) ){
-                $query .="b.nort_id IN('". $filter_query['rt'] ."')";
-            }
-        }
-        dd($query);
+        dd($filter_query);
+        $query = "SELECT warga.nama,nort_id,blok,no_rumah,trans.* FROM warga INNER JOIN (
+                    SELECT
+                        warga_id, ";
 
-        $data = DB::select(DB::raw($query));
+        $query .= "     SUM(CASE WHEN (periode = '01-2019') THEN pembayaran ELSE 0 END) AS Januari,
+                        SUM(CASE WHEN (periode = '02-2019') THEN pembayaran ELSE 0 END) AS Februari,
+                        SUM(CASE WHEN (periode = '03-2019') THEN pembayaran ELSE 0 END) AS Maret,
+                        SUM(CASE WHEN (periode = '04-2019') THEN pembayaran ELSE 0 END) AS April,
+                        SUM(CASE WHEN (periode = '05-2019') THEN pembayaran ELSE 0 END) AS Mei,
+                        SUM(CASE WHEN (periode = '06-2019') THEN pembayaran ELSE 0 END) AS Juni,
+                        SUM(CASE WHEN (periode = '07-2019') THEN pembayaran ELSE 0 END) AS Juli,
+                        SUM(CASE WHEN (periode = '08-2019') THEN pembayaran ELSE 0 END) AS Agustus,
+                        SUM(CASE WHEN (periode = '09-2019') THEN pembayaran ELSE 0 END) AS September,
+                        SUM(CASE WHEN (periode = '10-2019') THEN pembayaran ELSE 0 END) AS Oktober,
+                        SUM(CASE WHEN (periode = '11-2019') THEN pembayaran ELSE 0 END) AS November,
+                        SUM(CASE WHEN (periode = '12-2019') THEN pembayaran ELSE 0 END) AS Desember
+                    FROM new_transaksi ";
 
-        if (!empty($filter['month'])) {
-            $filter_month = [];
-            foreach ($filter['month'] as $val_month) {
-                $filter_month[] = $val_month.'_'.date('y');
-            }
-        }
+                    if(!empty($filter_query)){
+                        $query .= " WHERE ";
+                        if(isset($filter_query['month']) ){
+                            $query .="periode IN('". $filter_query['month'] ."')";
+                        }
+                    }
+        $query .="  GROUP BY warga_id
+                ) trans ON trans.warga_id=warga.id ";
 
-        $data_pembayaran = [];
-        foreach ($data as $key => $value) {
-            $data_warga     = Members::where('id', $value->warga_id)->first();
-            $nama_pemilik   = $data_warga['nama'];
-            $blok           = $data_warga['blok'];
-            $rt_data        = RTNo::where('id', $data_warga['nort_id'])->first();
-            $rt_data        = $rt_data['no_rt'];
-
-            $pembayaran = json_decode($value->pembayaran, true);
-            $i = 0;
-            foreach ($pembayaran as $keys => $values) {
-
-                if (!empty($filter_month)) {
-
-                    if (in_array($keys, $filter_month)) {  
-
-                       if (!empty($filter['status']) && count($filter['status']) == 1 && $filter['status'][0] == 'sudah' && !empty($values)) {
-                            $data_pembayaran['nama_pemilik'] = $nama_pemilik;
-                            $data_pembayaran['blok'] = $blok;
-                            $data_pembayaran['rt'] = $rt_data;
-                            $data_pembayaran[$keys] = is_numeric($values) ? number_format($values, '2', ',', '.') : $values;
-                       }
-                       if (!empty($filter['status']) && count($filter['status']) == 1 && $filter['status'][0] == 'belum' && empty($values)) {
-                            $data_pembayaran['nama_pemilik'] = $nama_pemilik;
-                            $data_pembayaran['blok'] = $blok;
-                            $data_pembayaran['rt'] = $rt_data;
-                            $data_pembayaran[$keys] = is_numeric($values) ? number_format($values, '2', ',', '.') : $values;
-                       }
-                       if (empty($filter['status'])) {
-                           $data_pembayaran = [];
-                       } 
-
-                       if(!empty($filter['status']) && count($filter['status']) == 2){
-                            $data_pembayaran['nama_pemilik'] = $nama_pemilik;
-                            $data_pembayaran['blok'] = $blok;
-                            $data_pembayaran['rt'] = $rt_data;
-                            $data_pembayaran[$keys] = is_numeric($values) ? number_format($values, '2', ',', '.') : $values;
-                       }
-
+                if(!empty($filter_query)){
+                    $query .= " WHERE ";
+                    if(isset($filter_query['rt']) ){
+                        $query .=" nort_id IN('". $filter_query['rt'] ."')";
                     }
                 }
-                $i++;
-            }
-           
-            if (!empty($data_pembayaran)) {
+        $query .=" ORDER BY nama";
+        
+        $data = DB::select(DB::raw($query));
+        $data_pembayaran = [];
+        $update_data = [];
+        foreach ($data as $key => $value) {
+            $rt_data        = RTNo::where('id', $value->nort_id)->first();
+            $rt_data        = $rt_data['no_rt'];
 
-                $transaksi = $data_pembayaran;
-                //unset($data_pembayaran);
-                $update_data[] = $transaksi;
-            }
-
-            if (empty($data_pembayaran)) {
-                $update_data = [];
-            }
+            $data_pembayaran['nama_pemilik'] = $value->nama;
+            $data_pembayaran['blok']         = $value->blok;
+            $data_pembayaran['rt']           = $rt_data;
+            $data_pembayaran['Januari']      = $value->Januari;
+            $data_pembayaran['Februari']     = $value->Februari;
+            $data_pembayaran['Maret']        = $value->Maret;
+            $data_pembayaran['April']        = $value->April;
+            $data_pembayaran['Mei']       = $value->Mei;
+            $data_pembayaran['Juni']      = $value->Juni;
+            $data_pembayaran['Juli']      = $value->Juli;
+            $data_pembayaran['Agustus']      = $value->Agustus;
+            $data_pembayaran['September']      = $value->September;
+            $data_pembayaran['Oktober']      = $value->Oktober;
+            $data_pembayaran['November']      = $value->November;
+            $data_pembayaran['Desember']      = $value->Desember;
+            $update_data[] = $data_pembayaran;
         }
-        //dd($update_data);
 
         if (!empty($update_data[0])) {
             $column_table = array_keys($update_data[0]);
@@ -307,17 +388,18 @@ class DashboardController extends Controller
                 "nama_pemilik",
                 "blok",
                 "rt",
-                "jan_19",
-                "feb_19",
-                "mar_19",
-                "apr_19",
-                "mei_19",
-                "juni_19",
-                "agust_19",
-                "sep_19",
-                "okt_19",
-                "nov_19",
-                "des_19"
+                "Januari",
+                "Februari",
+                "Maret",
+                "April",
+                "Mei",
+                "Juni",
+                "Juli",
+                "Agustus",
+                "September",
+                "Oktober",
+                "November",
+                "Desember"
             ];
         }
 
