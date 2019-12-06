@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('import', 'DashboardController@import');
 Route::get('total_warga', 'DashboardController@total_warga');
-Route::get('pie_chart', 'DashboardController@pieChart');
+Route::get('pie_chart', 'DashboardController@pieChart_new');
 Route::get('iuran_warga', 'DashboardController@dataTransactions');
 Route::get('data_rt', 'DashboardController@data_rt');
 Route::get('report', 'DashboardController@reportData');

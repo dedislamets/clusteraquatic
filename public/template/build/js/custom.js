@@ -5276,11 +5276,13 @@ if (typeof NProgress != 'undefined') {
 			var selectpicker = $('#selectpicker').selectpicker().val();	
 			var selectmonth = $('#selectmonth').selectpicker().val();
 			var selectstatus = $('#selectstatus').selectpicker().val();
+			var selectyear = $('#selectyear').val();
 			var body = {
 			    data: {
 			        month: selectmonth,
 			        rt: selectpicker,
-			        status: selectstatus
+			        status: selectstatus,
+			        year: selectyear
 			    }
 			}
 		    $.ajax({
