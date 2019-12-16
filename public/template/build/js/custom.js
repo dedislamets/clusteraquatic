@@ -2545,12 +2545,7 @@ if (typeof NProgress != 'undefined') {
 				  scroller: true
 				});
 
-				$('#datatable-fixed-header').DataTable({
-				  fixedHeader: true,
-				  fixedColumns: {
-						leftColumns: 1,
-					}
-				});
+
 
 				// $('#table-report').DataTable({
 				// 	fixedHeader: true,
@@ -5248,27 +5243,74 @@ if (typeof NProgress != 'undefined') {
 						iuranTable += '<tbody>';
 								$.each( tbody, function( keys_tbody, vals_tbody ) {
 									iuranTable += '<tr>';
-
+										var x=0;
+										var align = "";
 										$.each( thead_data, function( keys_thead, vals_thead ) {
-											if (vals_tbody[vals_thead] == '0,00' || vals_tbody[vals_thead] == undefined) {
+											if (vals_tbody[vals_thead] == '0' || vals_tbody[vals_thead] == undefined) {
 												if (vals_tbody[vals_thead] == undefined) {
 													iuranTable += '<td>'+ '-' +'</td>';
 												} else {
-													iuranTable += '<td style="background-color: #d9534f;color: white;">'+ vals_tbody[vals_thead] +'</td>';
+													iuranTable += '<td style="background-color: #d9534f;color: white;text-align: right">'+ vals_tbody[vals_thead] +'</td>';
 												}
 											} else {
-												iuranTable += '<td>'+ vals_tbody[vals_thead] +'</td>';
+												if(x>2)
+													align = "style='text-align: right'";
+
+												iuranTable += '<td '+ align+'>'+ vals_tbody[vals_thead] +'</td>';
 											}
+											x++;
 										});
 									iuranTable += '</tr>';
 								});
 						iuranTable += '</tbody>';
+						iuranTable += '<tfoot><tr><th colspan="3" style="text-align:right">Total:</th>';
+						for (var i = 0; i < thead_data.length-3; i++) {
+							iuranTable += '<th></th>';
+						}
+						
+						iuranTable += '</tr></tfoot>'
 					iuranTable += '</table>';
 					$('#tableIuran').html(iuranTable);
-					init_DataTables();
+					iuranDatatable(thead_data.length);
 		        }
 		    });
 		//}, 5000);
+	}
+
+	function iuranDatatable(col){
+		$('#datatable-fixed-header').DataTable({
+		  	fixedHeader: true,
+		  	fixedColumns: {
+				leftColumns: 1,
+			},
+			"footerCallback": function ( row, data, start, end, display ) {
+
+	            var api = this.api(), data;
+	 
+	            // Remove the formatting to get integer data for summation
+	            var intVal = function ( i ) {
+	                return typeof i === 'string' ?
+	                    i.replace(/[\$,]/g, '')*1 :
+	                    typeof i === 'number' ?
+	                        i : 0;
+	            };
+
+	            for (var i = 3; i < col; i++) {
+					// Total over all pages
+		            total = api
+		                .column( i )
+		                .data()
+		                .reduce( function (a, b) {
+		                    return intVal(a) + intVal(b);
+		                }, 0 );
+		
+		            // Update footer
+		            $( api.column( i).footer() ).html(String(total).replace(/(.)(?=(\d{3})+$)/g,'$1,'));
+				}
+	 
+	            
+	        }
+		});
 	}
 
 	function chartIuran(){

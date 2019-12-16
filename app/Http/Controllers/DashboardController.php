@@ -471,6 +471,7 @@ class DashboardController extends Controller
         $year = isset($filter['year'])? $filter['year'] : '';
         if($month !=""){
             $filter_query['month'] = implode("-". $year ."','",$month). "-" .$year ;
+            $filter_query['month_label'] = implode(",",$month) ;
         }
         $rt = isset($filter['rt'])? $filter['rt'] : '';
         if($rt !=""){
@@ -572,14 +573,70 @@ class DashboardController extends Controller
 
         $chart_empty = [];
         $chart = [];
-        print("<pre>".print_r($data,true)."</pre>");
+        $arr_months = array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
+        
         foreach ($data as $key => $value) {
+            //print("<pre>".print_r((array)$data[$key],true)."</pre>");
+            $result = (array)$data[$key];
+            $bayar=true;
+            foreach ($filter['month'] as $mm ) {
+                
+                $m = $arr_months[(int) $mm-1] ;
+                if ($result[$m] == 0) {
+                    $bayar = false;
+                }
+            }
+            if ($bayar){
+                $chart[]= $result['nama'];
+            }else{
+                $chart_empty[]= $result['nama'];
+            }
 
         }
 
-        // $belum_bayar = count($chart_empty);
-        // $sudah_bayar = count($chart);
-        // $total       = count($chart) + count($chart_empty);
+        $belum_bayar = count($chart_empty);
+        $sudah_bayar = count($chart);
+        $total       = count($chart) + count($chart_empty);
+
+        $perbandingan_belum = $belum_bayar / $total * 100;
+        $perbandingan_sudah = $sudah_bayar / $total * 100;
+
+        if (!empty($filter['status']) && count($filter['status']) == 1 && $filter['status'][0] == 'sudah') {
+            $pieChart['data'] = [[
+                'value' => $perbandingan_sudah,
+                'name' => 'Sudah Bayar'
+            ]];
+            $pieChart['legend'] = ['Sudah Bayar'];
+        } elseif (!empty($filter['status']) && count($filter['status']) == 1 && $filter['status'][0] == 'belum') {
+            $pieChart['data'] = [[
+                'value' => $perbandingan_belum,
+                'name' => 'Belum Bayar'
+            ]];
+            $pieChart['legend'] = ['Belum Bayar'];
+        } elseif (empty($filter['status'])) {
+            $pieChart['data'] = [
+                'value' => 0,
+                'name' => '0'
+            ];
+            $pieChart['legend'] = [];
+        } else{        
+            $pieChart['data'] = [
+                [
+                    'value' => floatval(preg_replace('/[^\d.]/', '', number_format($perbandingan_belum, 2))),
+                    'name' => 'Belum'
+                ],
+                [
+                    'value' => floatval(preg_replace('/[^\d.]/', '', number_format($perbandingan_sudah, 2))),
+                    'name' => 'Sudah'
+                ],
+            ];
+            $pieChart['legend'] = ['Sudah', 'Belum'];
+        }
+
+        $chartResponse['byStatus'] = $pieChart;
+
+        return response()->json($chartResponse);
+
     }
 
     public function pieChart(Request $request)
