@@ -572,9 +572,14 @@ class DashboardController extends Controller
 
         $chart_empty = [];
         $chart = [];
+        print("<pre>".print_r($data,true)."</pre>");
         foreach ($data as $key => $value) {
 
         }
+
+        // $belum_bayar = count($chart_empty);
+        // $sudah_bayar = count($chart);
+        // $total       = count($chart) + count($chart_empty);
     }
 
     public function pieChart(Request $request)
