@@ -23,7 +23,7 @@
     <link href="public/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <style type="text/css">
       .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
-          width: 100%;
+          /*width: 100%;*/
       }
       ul.bar_tabs>li {
             width: 30%;
@@ -68,23 +68,6 @@
               </div>
             </div>
             <!-- /sidebar menu -->
-
-            <!-- /menu footer buttons -->
-            <div class="sidebar-footer hidden-small">
-              <a data-toggle="tooltip" data-placement="top" title="Settings">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="Lock">
-                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
-                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-              </a>
-            </div>
-            <!-- /menu footer buttons -->
           </div>
         </div>
 
@@ -133,14 +116,14 @@
                         </div>
                         <div class="x_content">
                           <div class="col-xs-12">
-                            <div class="col-md-2">RT</div>
-                            <div class="col-md-10">
+                            <div class="col-xs-2">RT</div>
+                            <div class="col-xs-10">
                               <select id="selectpicker" multiple data-actions-box="true"></select>
                             </div>
                           </div>
                           <div class="col-xs-12" style="margin-bottom: 5px">
-                            <div class="col-md-2">Tahun</div>
-                            <div class="col-md-10">
+                            <div class="col-xs-2">Tahun</div>
+                            <div class="col-xs-10">
                               <select id="selectyear" class="form-control">
                                 <option value="2018" >2018</option>
                                 <option value="2019" selected>2019</option>
@@ -150,8 +133,8 @@
                             </div>
                           </div>
                           <div class="col-xs-12">
-                            <div class="col-md-2">Bulan</div>
-                            <div class="col-md-10">
+                            <div class="col-xs-2">Bulan</div>
+                            <div class="col-xs-10">
                               <select id="selectmonth" multiple data-actions-box="true">
                                 <option value="01" selected>Januari</option>
                                 <option value="02" selected>Februari</option>
@@ -169,8 +152,8 @@
                             </div>
                           </div>
                           <div class="col-xs-12">
-                            <div class="col-md-2">Status</div>
-                            <div class="col-md-10">
+                            <div class="col-xs-2">Status</div>
+                            <div class="col-xs-10">
                               <select id="selectstatus" style="width: 100%" multiple data-actions-box="true">
                                 <option value="sudah" selected>Sudah Bayar</option>
                                 <option value="belum" selected>Belum Bayar</option>
@@ -178,8 +161,8 @@
                             </div>
                           </div>
                           <div class="col-xs-12">
-                            <div class="col-md-2">&nbsp;</div>
-                            <div class="col-md-10">
+                            <div class="col-xs-2">&nbsp;</div>
+                            <div class="col-xs-10">
                               <button type="button" id="btn-refresh" class="btn btn-block btn-success">Refresh</button>
                             </div>
                             
@@ -306,10 +289,21 @@
         }, 3000);
 
         $('#btn-refresh').on('click', function() {
-          chartIuran();
-          dataIuran(); 
+            showloader('body');
+            chartIuran();
+            dataIuran(); 
+            hideloader();
         });
       })
+
+      function showloader(val){
+        $(val).append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+      }
+      function hideloader(){
+        $( "#loadingDiv" ).fadeOut(500, function() {
+            $( "#loadingDiv" ).remove(); 
+          }); 
+      }
 
     </script>
   </body>

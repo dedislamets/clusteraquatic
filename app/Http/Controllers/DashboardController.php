@@ -280,6 +280,7 @@ class DashboardController extends Controller
         $filter_query = array();
         $month = isset($filter['month'])? $filter['month'] : '';
         $year = isset($filter['year'])? $filter['year'] : '';
+
         if($month !=""){
             $filter_query['month'] = implode("-". $year ."','",$month). "-" .$year ;
         }
@@ -306,52 +307,52 @@ class DashboardController extends Controller
         $query = "SELECT warga.nama,nort_id,blok,no_rumah,trans.* FROM warga INNER JOIN (
                     SELECT
                         warga_id, ";
-                    if (strpos($filter_query['month'], '01-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '01-2019') THEN pembayaran ELSE 0 END) AS Januari,";
+                    if (strpos($filter_query['month'], "01-". $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '01-". $year."') THEN pembayaran ELSE 0 END) AS Januari,";
                         $query_bayar .= " Januari ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '02-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '02-2019') THEN pembayaran ELSE 0 END) AS Februari,";
+                    if (strpos($filter_query['month'], '02-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '02-". $year."') THEN pembayaran ELSE 0 END) AS Februari,";
                         $query_bayar .= " Februari ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '03-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '03-2019') THEN pembayaran ELSE 0 END) AS Maret,";
+                    if (strpos($filter_query['month'], '03-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '03-". $year."') THEN pembayaran ELSE 0 END) AS Maret,";
                         $query_bayar .= " Maret ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '04-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '04-2019') THEN pembayaran ELSE 0 END) AS April,";
+                    if (strpos($filter_query['month'], '04-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '04-". $year."') THEN pembayaran ELSE 0 END) AS April,";
                         $query_bayar .= " April ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '05-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '05-2019') THEN pembayaran ELSE 0 END) AS Mei,";
+                    if (strpos($filter_query['month'], '05-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '05-". $year."') THEN pembayaran ELSE 0 END) AS Mei,";
                         $query_bayar .= " Mei ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '06-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '06-2019') THEN pembayaran ELSE 0 END) AS Juni,";
+                    if (strpos($filter_query['month'], '06-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '06-". $year."') THEN pembayaran ELSE 0 END) AS Juni,";
                         $query_bayar .= " Juni ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '07-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '07-2019') THEN pembayaran ELSE 0 END) AS Juli,";
+                    if (strpos($filter_query['month'], '07-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '07-". $year."') THEN pembayaran ELSE 0 END) AS Juli,";
                         $query_bayar .= " Juli ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '08-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '08-2019') THEN pembayaran ELSE 0 END) AS Agustus,";
+                    if (strpos($filter_query['month'], '08-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '08-". $year."') THEN pembayaran ELSE 0 END) AS Agustus,";
                         $query_bayar .= " Agustus ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '09-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '09-2019') THEN pembayaran ELSE 0 END) AS September,";
+                    if (strpos($filter_query['month'], '09-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '09-". $year."') THEN pembayaran ELSE 0 END) AS September,";
                         $query_bayar .= " September ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '10-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '10-2019') THEN pembayaran ELSE 0 END) AS Oktober,";
+                    if (strpos($filter_query['month'], '10-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '10-". $year."') THEN pembayaran ELSE 0 END) AS Oktober,";
                         $query_bayar .= " Oktober ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '11-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '11-2019') THEN pembayaran ELSE 0 END) AS November,";
+                    if (strpos($filter_query['month'], '11-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '11-". $year."') THEN pembayaran ELSE 0 END) AS November,";
                         $query_bayar .= " November ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '12-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '12-2019') THEN pembayaran ELSE 0 END) AS Desember,";
+                    if (strpos($filter_query['month'], '12-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '12-". $year."') THEN pembayaran ELSE 0 END) AS Desember,";
                         $query_bayar .= " Desember ". $operator ." 0 and";
                     }
         $query = substr($query, 0, -1);
@@ -397,51 +398,51 @@ class DashboardController extends Controller
             $data_pembayaran['blok']         = $value->blok;
             $data_pembayaran['rt']           = $rt_data;
 
-            if (strpos($filter_query['month'], '01-2019') !== false) {
+            if (strpos($filter_query['month'], '01-'. $year) !== false) {
                 $data_pembayaran['Januari']      = number_format($value->Januari) ;
                 array_push($column_table, "Januari");
             }
-            if (strpos($filter_query['month'], '02-2019') !== false) {
+            if (strpos($filter_query['month'], '02-'. $year) !== false) {
                 $data_pembayaran['Februari']     = number_format($value->Februari);
                 array_push($column_table, "Februari");
             }
-            if (strpos($filter_query['month'], '03-2019') !== false) {
+            if (strpos($filter_query['month'], '03-'. $year) !== false) {
                $data_pembayaran['Maret']        = number_format($value->Maret);
                array_push($column_table, "Maret");
             }
-            if (strpos($filter_query['month'], '04-2019') !== false) {
+            if (strpos($filter_query['month'], '04-'. $year) !== false) {
                 $data_pembayaran['April']        = number_format($value->April);
                 array_push($column_table, "April");
             }
-            if (strpos($filter_query['month'], '05-2019') !== false) {
+            if (strpos($filter_query['month'], '05-'. $year) !== false) {
                $data_pembayaran['Mei']       = number_format($value->Mei);
                array_push($column_table, "Mei");
             }
-            if (strpos($filter_query['month'], '06-2019') !== false) {
+            if (strpos($filter_query['month'], '06-'. $year) !== false) {
                 $data_pembayaran['Juni']      = number_format($value->Juni);
                 array_push($column_table, "Juni");
             }
-            if (strpos($filter_query['month'], '07-2019') !== false) {
+            if (strpos($filter_query['month'], '07-'. $year) !== false) {
                 $data_pembayaran['Juli']      = number_format($value->Juli);
                 array_push($column_table, "Juli");
             }
-            if (strpos($filter_query['month'], '08-2019') !== false) {
+            if (strpos($filter_query['month'], '08-'. $year) !== false) {
                $data_pembayaran['Agustus']      = number_format($value->Agustus);
                array_push($column_table, "Agustus");
             }
-            if (strpos($filter_query['month'], '09-2019') !== false) {
+            if (strpos($filter_query['month'], '09-'. $year) !== false) {
                $data_pembayaran['September']      = number_format($value->September);
                array_push($column_table, "September");
             }
-            if (strpos($filter_query['month'], '10-2019') !== false) {
+            if (strpos($filter_query['month'], '10-'. $year) !== false) {
                $data_pembayaran['Oktober']      = number_format($value->Oktober);
                array_push($column_table, "Oktober");
             }
-            if (strpos($filter_query['month'], '11-2019') !== false) {
+            if (strpos($filter_query['month'], '11-'. $year) !== false) {
                $data_pembayaran['November']      = number_format($value->November);
                array_push($column_table, "November");
             }
-            if (strpos($filter_query['month'], '12-2019') !== false) {
+            if (strpos($filter_query['month'], '12-'. $year) !== false) {
                $data_pembayaran['Desember']      = number_format($value->Desember);
                array_push($column_table, "Desember");
 
@@ -496,52 +497,52 @@ class DashboardController extends Controller
         $query = "SELECT warga.nama,nort_id,blok,no_rumah,trans.* FROM warga INNER JOIN (
                     SELECT
                         warga_id, ";
-                    if (strpos($filter_query['month'], '01-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '01-2019') THEN pembayaran ELSE 0 END) AS Januari,";
+                    if (strpos($filter_query['month'], '01-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '01-". $year."') THEN pembayaran ELSE 0 END) AS Januari,";
                         $query_bayar .= " Januari ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '02-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '02-2019') THEN pembayaran ELSE 0 END) AS Februari,";
+                    if (strpos($filter_query['month'], '02-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '02-". $year."') THEN pembayaran ELSE 0 END) AS Februari,";
                         $query_bayar .= " Februari ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '03-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '03-2019') THEN pembayaran ELSE 0 END) AS Maret,";
+                    if (strpos($filter_query['month'], '03-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '03-". $year."') THEN pembayaran ELSE 0 END) AS Maret,";
                         $query_bayar .= " Maret ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '04-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '04-2019') THEN pembayaran ELSE 0 END) AS April,";
+                    if (strpos($filter_query['month'], '04-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '04-". $year."') THEN pembayaran ELSE 0 END) AS April,";
                         $query_bayar .= " April ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '05-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '05-2019') THEN pembayaran ELSE 0 END) AS Mei,";
+                    if (strpos($filter_query['month'], '05-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '05-". $year."') THEN pembayaran ELSE 0 END) AS Mei,";
                         $query_bayar .= " Mei ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '06-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '06-2019') THEN pembayaran ELSE 0 END) AS Juni,";
+                    if (strpos($filter_query['month'], '06-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '06-". $year."') THEN pembayaran ELSE 0 END) AS Juni,";
                         $query_bayar .= " Juni ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '07-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '07-2019') THEN pembayaran ELSE 0 END) AS Juli,";
+                    if (strpos($filter_query['month'], '07-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '07-". $year."') THEN pembayaran ELSE 0 END) AS Juli,";
                         $query_bayar .= " Juli ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '08-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '08-2019') THEN pembayaran ELSE 0 END) AS Agustus,";
+                    if (strpos($filter_query['month'], '08-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '08-". $year."') THEN pembayaran ELSE 0 END) AS Agustus,";
                         $query_bayar .= " Agustus ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '09-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '09-2019') THEN pembayaran ELSE 0 END) AS September,";
+                    if (strpos($filter_query['month'], '09-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '09-". $year."') THEN pembayaran ELSE 0 END) AS September,";
                         $query_bayar .= " September ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '10-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '10-2019') THEN pembayaran ELSE 0 END) AS Oktober,";
+                    if (strpos($filter_query['month'], '10-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '10-". $year."') THEN pembayaran ELSE 0 END) AS Oktober,";
                         $query_bayar .= " Oktober ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '11-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '11-2019') THEN pembayaran ELSE 0 END) AS November,";
+                    if (strpos($filter_query['month'], '11-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '11-". $year."') THEN pembayaran ELSE 0 END) AS November,";
                         $query_bayar .= " November ". $operator ." 0 and";
                     }
-                    if (strpos($filter_query['month'], '12-2019') !== false) {
-                        $query .= "SUM(CASE WHEN (periode = '12-2019') THEN pembayaran ELSE 0 END) AS Desember,";
+                    if (strpos($filter_query['month'], '12-'. $year) !== false) {
+                        $query .= "SUM(CASE WHEN (periode = '12-". $year."') THEN pembayaran ELSE 0 END) AS Desember,";
                         $query_bayar .= " Desember ". $operator ." 0 and";
                     }
         $query = substr($query, 0, -1);
@@ -598,8 +599,13 @@ class DashboardController extends Controller
         $sudah_bayar = count($chart);
         $total       = count($chart) + count($chart_empty);
 
-        $perbandingan_belum = $belum_bayar / $total * 100;
-        $perbandingan_sudah = $sudah_bayar / $total * 100;
+        $perbandingan_belum = 0;
+        $perbandingan_sudah = 0;
+            
+        if($total>0){
+            $perbandingan_belum = $belum_bayar / $total * 100;
+            $perbandingan_sudah = $sudah_bayar / $total * 100;
+        }
 
         if (!empty($filter['status']) && count($filter['status']) == 1 && $filter['status'][0] == 'sudah') {
             $pieChart['data'] = [[
